@@ -8,7 +8,7 @@
 #include "keypad.h"
 
 // agrgar un comentario
-asdasdsadkj hkashdk jash kajshd jas  error
+//asdasdsadkj hkashdk jash kajshd jas  error
 
 void app_main(){
   keypad_init();
