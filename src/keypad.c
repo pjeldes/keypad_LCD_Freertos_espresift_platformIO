@@ -37,7 +37,7 @@ char keypad_get_char(){
       //barrido en columnas
       for(int j = 0; j<TAM;j++){
         if(gpio_get_level(pines_columnas[j]) == 0 ){
-          printf("Tecla : %c\n", teclas[i][j]);
+          //printf("Tecla : %c\n", teclas[i][j]);
           k = teclas[i][j];
           while(gpio_get_level(pines_columnas[j]) == 0){}
         }
