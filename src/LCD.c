@@ -88,7 +88,7 @@ void LCD_home(void)
 void LCD_clearScreen(void)
 {
     LCD_writeByte(LCD_CLEAR, LCD_COMMAND);
-    vTaskDelay(2 / portTICK_RATE_MS);                                   // This command takes a while to complete
+    vTaskDelay(10 / portTICK_RATE_MS);                                   // This command takes a while to complete
 }
 
 void LCD_Plot(char arr[], uint8_t col, uint8_t row){

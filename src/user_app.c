@@ -28,7 +28,8 @@ void PLOT_credential(uint8_t id){
     printf("PASS Credential: %s\n",pass_credential[id]);
 }
 
-// sirve para corroborar credenciales
+// sirve para corroborar credenciales, busca si el usuari existe y corrobora si el usuario/contraseña
+// es correcto
 bool checkout_credential(char uss_arr[],char pass_arr[]){
     //buscar user por id
     bool THERE_IS_USER = false;

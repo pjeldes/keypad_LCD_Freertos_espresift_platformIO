@@ -18,6 +18,7 @@ void app_main(){
   char cadena[6] = "nnnnn";
   uint8_t col = 0;
   uint8_t row = 0;
+  bool CHECK_OUT_CREDENTIAL = false;
   //indica si ha terminado el tomar el usuario
   bool GET_USER_FINISH = false;
   //indica si ha terminado de tomar el password
@@ -30,7 +31,13 @@ void app_main(){
         LCD_Plot("Pass:",0,LCD_LINETWO);
         k = keypad_get_char();
         if(k!='n' && k != '*'){
-          LCD_PlotChar(k,5+col,row);
+          if(row == LCD_LINEONE){
+            LCD_PlotChar(k,5+col,row);
+          }
+          else{
+            LCD_PlotChar('*',5+col,row);
+          }
+          //LCD_PlotChar(k,5+col,row);
           cadena[col] = k;
           printf("col: %d\n",col);
           col++;
@@ -51,13 +58,36 @@ void app_main(){
           }
           //corroboracion
           if (GET_USER_FINISH && GET_PASS_FINISH == true){
-            checkout_credential(user,pass);
+            GET_USER_FINISH = false;
+            GET_PASS_FINISH = false;
+            CHECK_OUT_CREDENTIAL = checkout_credential(user,pass);
+            if(CHECK_OUT_CREDENTIAL){
+              //CHECK_OUT_CREDENTIAL = false;
+              user[6] = "ooooo";
+              pass[6] = "ooooo";
+              LCD_clearScreen();
+              LCD_Plot("--Welcom--",0,LCD_LINEONE);
+              LCD_Plot(user,5,LCD_LINETWO);
+              vTaskDelay(5000/portTICK_RATE_MS);//tiempo para mostrar mensaje
+              LCD_clearScreen();
+            }
+            if (CHECK_OUT_CREDENTIAL == 0){
+              LCD_clearScreen();
+              LCD_Plot("PASS WRONG",0,LCD_LINEONE);
+              LCD_Plot("TRY AGAIN",5,LCD_LINETWO);
+              vTaskDelay(3000/portTICK_RATE_MS);//tiempo de espera para mostrar mensaje
+              LCD_clearScreen();
+            }
+
+            
           } 
         }
        
         if(k=='*'){
           GET_USER_FINISH = false;
           GET_PASS_FINISH = false;
+          col = 0;
+          row = 0;
           //PLOT_credential(1);
           printf("* PRESSED\n");
             vTaskDelay(1/portTICK_RATE_MS);
