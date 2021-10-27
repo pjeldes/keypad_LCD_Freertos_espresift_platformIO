@@ -83,10 +83,12 @@ void userr_app(void *arg){
   
   char k = 'n';
     while (true) {
+        //printf("usser_app\n");
         LCD_home();
         LCD_Plot("User:",0,LCD_LINEONE);
         LCD_Plot("Pass:",0,LCD_LINETWO);
-        k = keypad_get_char();
+        //k = keypad_get_char();
+        k = 'n';
         if(k!='n' && k != '*'){
           if(row == LCD_LINEONE){
             LCD_PlotChar(k,5+col,row);
