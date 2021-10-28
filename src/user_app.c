@@ -143,7 +143,7 @@ void userr_app(void *arg){
           } 
         }
        
-        if(k=='*'){
+        if(k=='*' && QUEUE_RECIVE == pdTRUE){
           GET_USER_FINISH = false;
           GET_PASS_FINISH = false;
           col = 0;
