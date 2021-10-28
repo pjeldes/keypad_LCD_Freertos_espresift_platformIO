@@ -80,6 +80,7 @@ void userr_app(void *arg){
   bool GET_USER_FINISH = false;
   //indica si ha terminado de tomar el password
   bool GET_PASS_FINISH = false;
+  bool QUEUE_RECIVE = pdFALSE;
   
   char k = 'n';
     while (true) {
@@ -88,8 +89,8 @@ void userr_app(void *arg){
         LCD_Plot("User:",0,LCD_LINEONE);
         LCD_Plot("Pass:",0,LCD_LINETWO);
         //k = keypad_get_char();
-        k = 'n';
-        if(k!='n' && k != '*'){
+        QUEUE_RECIVE = xQueueReceive(Q_keypad,&k,10/portTICK_RATE_MS);
+        if(QUEUE_RECIVE == pdTRUE && k != '*'){
           if(row == LCD_LINEONE){
             LCD_PlotChar(k,5+col,row);
           }

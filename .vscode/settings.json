@@ -2,6 +2,7 @@
     "files.associations": {
         "ets_sys.h": "c",
         "stdio.h": "c",
-        "semphr.h": "c"
+        "semphr.h": "c",
+        "freertos.h": "c"
     }
 }

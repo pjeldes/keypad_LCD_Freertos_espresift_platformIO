@@ -11,7 +11,6 @@
 #include <stdlib.h>
 #include "freertos/semphr.h"
 
-SemaphoreHandle_t mi_semaforo;
 
 int pines_filas[TAM] = {25,26,27,16};
 int pines_columnas[TAM] = {17,5,18,19};
@@ -33,14 +32,10 @@ void keypad_init(void){
         gpio_pullup_en(pines_columnas[i]);
         gpio_pullup_en(pines_filas[i]);
         
-        //gpio_install_isr_service(ESP_ISR_FLAG);
         gpio_isr_handler_add(pines_filas[i],pulsador,NULL);
         gpio_isr_handler_add(pines_columnas[i],pulsador,NULL);
         gpio_set_intr_type(pines_columnas[i],GPIO_INTR_NEGEDGE);
         gpio_set_intr_type(pines_filas[i],GPIO_INTR_POSEDGE);
-
-        //gpio_pullup_en(pines_filas[i]);
-        //gpio_set_level(pines_filas[i],1);
   }
   vTaskDelay(10/portTICK_RATE_MS);
 }
@@ -94,16 +89,14 @@ char *keypad_get_string(){
           if(keypad_get_char() != 'n'){
             string[i] = keypad_get_char();
           }
-          //string[i] = keypad_get_char();
+
       }
 
-    //printf("Esto contiene un string : %s\n",string);
     vTaskDelay(2/portTICK_RATE_MS);
     return string;
 }
 
 void task_keypad(void *arg){
-    mi_semaforo = xSemaphoreCreateBinary();
     char k = 'n';
     printf("first example task\n");
     while (1){
@@ -112,6 +105,7 @@ void task_keypad(void *arg){
             k = keypad_get_char();
             vTaskDelay(1/portTICK_RATE_MS);
             if(k!='n'){
+                xQueueSendToBack(Q_keypad,&k,10/portTICK_RATE_MS);
                 printf("char k: %c\n",k);
                 keypad_isr_handler_add();
             }
